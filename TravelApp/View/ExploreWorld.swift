@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-// first commit
+
 struct ExploreWorld: View {
     
     @State private var searchString = ""
@@ -19,7 +19,21 @@ struct ExploreWorld: View {
         }
         return Destination.sampleData.filter({ $0.name.lowercased().contains(searchString.lowercased())})
     }
-    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                topNav
+                topTitle
+                searchBar
+                destinationList
+            }
+            .padding(.horizontal)
+        }
+        .padding(.vertical)
+    }
+    ////// // Some Viewes
+    ///
+
     var topNav: some View {
             HStack {
                 Image(systemName: "person")
@@ -44,9 +58,43 @@ struct ExploreWorld: View {
             Text("Explore \nthe world!")
                 .font(.largeTitle)
         }
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    
+    var searchBar: some View {
+        HStack {
+            TextField("Enter location", text: $searchString)
+            Image(systemName: "magnifyingglass")
+        }
+        .padding()
+        .background(.gray, in: RoundedRectangle(cornerRadius: 10))
+        .clipped()
+        .shadow(radius: 2)
     }
+    
+    var destinationList: some View {
+            LazyVGrid(columns: [item], alignment: .center, spacing: 30) {
+                ForEach(destinations) { destination in
+                    VStack {
+                        AsyncImage(url: URL(string: destination.imageString)!) { img in
+                            img
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 100, height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        } placeholder: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100, height: 100)
+                        }
+                        
+                        Text(destination.name)
+                            .foregroundColor(.black)
+                    }
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 5)
+                    .background(.primary, in: RoundedRectangle(cornerRadius: 10))
+                }
+            }
+            .animation(.easeInOut, value: searchString)
+        }
 }
 
 struct ExploreWorld_Previews: PreviewProvider {
