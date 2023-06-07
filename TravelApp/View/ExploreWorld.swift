@@ -90,7 +90,7 @@ struct ExploreWorld: View {
                     }
                     .padding(.vertical, 5)
                     .padding(.horizontal, 5)
-                    .background(.primary, in: RoundedRectangle(cornerRadius: 10))
+                    .background(.white , in: RoundedRectangle(cornerRadius: 10))
                 }
             }
             .animation(.easeInOut, value: searchString)
